@@ -1,4 +1,4 @@
-# Angular
+# Phonebook Angular(Front-end)
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.2.2.
 
@@ -6,22 +6,25 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
-## Code scaffolding
+## Requirements
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+1. node 10.15.0 or above (primary).
+2. npm 6.4.1 or above (primary).
+3. angular-cli 8
 
-## Build
+4. git 2.21.0 or above.
+5. yarn 1.17.3 or above.
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+## Steps to Install and Run
 
-## Running unit tests
+1. Download zip file and extract (or) open terminal/command-prompt and run `git clone https://github.com/manukudur/phonebook.git` if git installed.
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+2. Navigate to project folder in terminal/command-prompt and run `npm install` (or) if yarn installed in your computer run `yarn install`.
 
-## Running end-to-end tests
+3. set backend `url` in both files `src\environments\environment.ts` & `src\environments\environment.prod.ts`
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+4. `npm start`.
 
-## Further help
+---
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+This project is deployed in https://papafit.herokuapp.com/
