@@ -56,6 +56,7 @@ export class GroupComponent implements OnInit {
       this.phonebookService.getGroup(id).subscribe(data => {
         this.group = data.contacts;
         // this.filteredContacts();
+        // bug bug bug ..................!
       });
       this.form = new FormGroup({
         _id: new FormControl(this.data.group._id),
