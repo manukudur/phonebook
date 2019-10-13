@@ -27,4 +27,4 @@ Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app w
 
 ---
 
-This project is deployed in https://papafit.herokuapp.com/
+This project is deployed in https://manukudur.github.io/phonebook/
