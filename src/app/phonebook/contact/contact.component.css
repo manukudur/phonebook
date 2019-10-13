@@ -1,0 +1,18 @@
+form {
+  display: flex;
+  flex-direction: column;
+}
+.spacer {
+  flex: 1 1 auto;
+}
+button {
+  margin-left: 5px;
+}
+.mat-display-1 {
+  margin-bottom: 10px;
+  text-align: center;
+}
+.error {
+  text-align: center;
+  color: red;
+}

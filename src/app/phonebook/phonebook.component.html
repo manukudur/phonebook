@@ -1,0 +1,40 @@
+<mat-progress-bar
+  mode="indeterminate"
+  *ngIf="!initialLoading"
+></mat-progress-bar>
+<table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+  <ng-container matColumnDef="type">
+    <th mat-header-cell *matHeaderCellDef style="width: 50px;"></th>
+    <td mat-cell *matCellDef="let element">
+      <mat-icon>{{ element.type }}</mat-icon>
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="name">
+    <th mat-header-cell *matHeaderCellDef>
+      <mat-form-field floatLabel="never" class="filter">
+        <mat-label>
+          <mat-icon>search</mat-icon>
+        </mat-label>
+        <input
+          matInput
+          (keyup)="applyFilter($event.target.value)"
+          autocomplete="off"
+        />
+      </mat-form-field>
+    </th>
+    <td mat-cell *matCellDef="let element">
+      <h2>
+        {{ element.name | titlecase }}
+        <span *ngIf="element.phone_number">
+          ( {{ element.phone_number }} )
+        </span>
+      </h2>
+    </td>
+  </ng-container>
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr
+    mat-row
+    *matRowDef="let row; columns: displayedColumns"
+    (click)="selectItem(row)"
+  ></tr>
+</table>

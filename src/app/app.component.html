@@ -1,0 +1,22 @@
+<mat-toolbar color="primary">
+  <mat-toolbar-row>
+    <span>Phonebook</span>
+    <span class="spacer"></span>
+    <button
+      mat-icon-button
+      matTooltip="Create Contact"
+      (click)="createContactDialog()"
+    >
+      <mat-icon>person_add</mat-icon>
+    </button>
+    <button
+      mat-icon-button
+      matTooltip="Create Group"
+      (click)="createGroupDialog()"
+    >
+      <mat-icon>group_add</mat-icon>
+    </button>
+  </mat-toolbar-row>
+</mat-toolbar>
+<app-phonebook></app-phonebook>
+<router-outlet></router-outlet>

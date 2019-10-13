@@ -1,0 +1,23 @@
+table {
+  width: 100%;
+}
+mat-form-field {
+  width: 100%;
+}
+::ng-deep .mat-form-field-underline {
+  display: none;
+}
+.filter {
+  font-size: x-large;
+}
+:host ::ng-deep .mat-form-field-wrapper {
+  padding-bottom: 0;
+}
+span {
+  font-size: 15px;
+}
+.mat-row:hover {
+  background-color: rgba(196, 196, 196, 0.425);
+}
+@media screen and (max-width: 801px) {
+}
