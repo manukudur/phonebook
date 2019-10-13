@@ -10,7 +10,7 @@ Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app w
 
 1. node 10.15.0 or above (primary).
 2. npm 6.4.1 or above (primary).
-3. angular-cli 8
+3. angular-cli 8 (primary).
 
 4. git 2.21.0 or above.
 5. yarn 1.17.3 or above.
