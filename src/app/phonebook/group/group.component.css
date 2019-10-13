@@ -68,3 +68,6 @@ mat-spinner {
   text-align: center;
   color: red;
 }
+.edit-mode {
+  display: none;
+}

@@ -1,12 +1,14 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { Observable, Subject } from "rxjs";
+import { environment } from "src/environments/environment";
 
+const URL: string = environment.url;
 @Injectable({
   providedIn: "root"
 })
 export class PhonebookService {
-  url: string = "http://localhost:3000/api";
+  url: string = URL;
   reloadBlogs = new Subject();
   constructor(private http: HttpClient) {}
 

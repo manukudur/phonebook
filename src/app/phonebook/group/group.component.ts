@@ -22,58 +22,52 @@ export class GroupComponent implements OnInit {
   error: string;
   loading: boolean = true;
   editMode: boolean = false;
+
   constructor(
     public dialogRef: MatDialogRef<GroupComponent>,
     @Inject(MAT_DIALOG_DATA)
     public data: { dialogType: string; group?: Group },
     private phonebookService: PhonebookService
   ) {}
+
   loadContacts() {
     this.phonebookService.getContacts().subscribe(contacts => {
       this.contacts = contacts;
     });
   }
+
+  toggleEditMode() {
+    this.editMode = !this.editMode;
+  }
+
+  filteredContacts() {
+    // array1 = array1.filter(val => !array2.includes(val));
+    let arr = this.contacts.filter(val => !this.group.includes(val));
+    console.log(this.contacts);
+    console.log(this.group);
+    console.log(arr);
+  }
+
   ngOnInit(): void {
+    this.loadContacts();
     if (this.data.group) {
       this.editMode = true;
       let id = this.data.group._id;
       this.phonebookService.getGroup(id).subscribe(data => {
         this.group = data.contacts;
+        this.filteredContacts();
       });
       this.form = new FormGroup({
         _id: new FormControl(this.data.group._id),
         name: new FormControl(this.data.group.name, [Validators.required])
       });
     } else {
-      this.loadContacts();
       this.editMode = false;
       this.form = new FormGroup({
         _id: new FormControl(null),
         name: new FormControl(null, [Validators.required]),
         type: new FormControl("group")
       });
-    }
-  }
-  toggleEditMode() {
-    this.editMode = !this.editMode;
-    this.loadContacts();
-    // array1 = array1.filter(val => !array2.includes(val));
-    this.contacts = this.contacts.filter(val => !this.group.includes(val));
-  }
-  drop(event: CdkDragDrop<string[]>) {
-    if (event.previousContainer === event.container) {
-      moveItemInArray(
-        event.container.data,
-        event.previousIndex,
-        event.currentIndex
-      );
-    } else {
-      transferArrayItem(
-        event.previousContainer.data,
-        event.container.data,
-        event.previousIndex,
-        event.currentIndex
-      );
     }
   }
   deleteGroup() {
@@ -114,5 +108,21 @@ export class GroupComponent implements OnInit {
   }
   onCancleClick(): void {
     this.dialogRef.close();
+  }
+  drop(event: CdkDragDrop<string[]>) {
+    if (event.previousContainer === event.container) {
+      moveItemInArray(
+        event.container.data,
+        event.previousIndex,
+        event.currentIndex
+      );
+    } else {
+      transferArrayItem(
+        event.previousContainer.data,
+        event.container.data,
+        event.previousIndex,
+        event.currentIndex
+      );
+    }
   }
 }

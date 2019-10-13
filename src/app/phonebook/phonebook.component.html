@@ -1,7 +1,3 @@
-<mat-progress-bar
-  mode="indeterminate"
-  *ngIf="!initialLoading"
-></mat-progress-bar>
 <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
   <ng-container matColumnDef="type">
     <th mat-header-cell *matHeaderCellDef style="width: 50px;"></th>
@@ -38,3 +34,8 @@
     (click)="selectItem(row)"
   ></tr>
 </table>
+
+<mat-progress-bar
+  mode="indeterminate"
+  *ngIf="!initialLoading"
+></mat-progress-bar>
