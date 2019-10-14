@@ -13,8 +13,10 @@ export class ContactComponent implements OnInit {
   public form: FormGroup;
   loading: boolean = true;
   editMode: boolean = false;
-  commonIn: [];
+  commonIn: string[] = [];
   error: string;
+  loadedData;
+
   constructor(
     public phonebookService: PhonebookService,
     public dialogRef: MatDialogRef<ContactComponent>,
@@ -24,11 +26,11 @@ export class ContactComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.data.contact) {
+      this.editMode = true;
       this.phonebookService
         .getContact(this.data.contact._id)
         .subscribe(data => {
           this.commonIn = data.commonIn;
-          this.editMode = true;
         });
       this.form = new FormGroup({
         _id: new FormControl(this.data.contact._id),
@@ -75,7 +77,7 @@ export class ContactComponent implements OnInit {
           this.onNoClick(received);
         },
         error => {
-          // this.error = error.error.message.errors.title.message;
+          this.error = "something went wrong";
           this.loading = true;
         }
       );
@@ -85,9 +87,7 @@ export class ContactComponent implements OnInit {
           this.onNoClick(received);
         },
         error => {
-          this.error = error.error.errors.phone_number.message;
-          console.log(error.error.errors.phone_number);
-
+          this.error = "something went wrong";
           this.loading = true;
         }
       );
@@ -98,5 +98,11 @@ export class ContactComponent implements OnInit {
   }
   onCancleClick(): void {
     this.dialogRef.close();
+  }
+  toggleEditMode() {
+    this.editMode = !this.editMode;
+  }
+  commonCount() {
+    return this.commonIn.length;
   }
 }

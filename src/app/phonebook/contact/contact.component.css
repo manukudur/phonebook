@@ -16,3 +16,10 @@ button {
   text-align: center;
   color: red;
 }
+h3 {
+  margin: 0%;
+}
+.groups-flow {
+  height: 70px;
+  overflow: auto;
+}

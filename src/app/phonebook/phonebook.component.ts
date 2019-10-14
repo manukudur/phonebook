@@ -49,7 +49,6 @@ export class PhonebookComponent implements OnInit {
     if (data.type === "contact") {
       const dialogRef = this.dialog.open(ContactComponent, {
         width: "500px",
-        height: "550px",
         data: { dialogType: "Edit", contact: data }
       });
 

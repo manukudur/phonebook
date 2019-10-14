@@ -1,63 +1,84 @@
-<h1 class="mat-display-1">{{ data.dialogType }} your Contact</h1>
+<h1 *ngIf="editMode" class="mat-display-1">
+  {{ data.contact.name }}
+</h1>
+<h1 *ngIf="!editMode" class="mat-display-1">
+  {{ data.dialogType }} your Contact
+</h1>
 <p class="error">{{ error }}</p>
 <div>
   <form [formGroup]="form" autocomplete="off">
-    <mat-form-field appearance="outline">
+    <mat-form-field appearance="outline" *ngIf="!editMode">
       <mat-label>Name</mat-label>
       <input matInput formControlName="name" />
       <mat-error>Name is required</mat-error>
     </mat-form-field>
     <mat-form-field appearance="outline">
       <mat-label>Phone Number</mat-label>
-      <input matInput formControlName="phone_number" />
+      <input matInput formControlName="phone_number" [readonly]="editMode" />
       <mat-error>Please Enter valid number</mat-error>
     </mat-form-field>
     <mat-form-field appearance="outline">
       <mat-label>Email ID</mat-label>
-      <input matInput formControlName="email_id" />
+      <input matInput formControlName="email_id" [readonly]="editMode" />
       <mat-error>Enter Valid Email ID</mat-error>
     </mat-form-field>
     <mat-form-field appearance="outline">
       <mat-label>Address</mat-label>
-      <textarea matInput rows="3" formControlName="address"></textarea>
+      <textarea
+        matInput
+        rows="2"
+        formControlName="address"
+        [readonly]="editMode"
+      ></textarea>
     </mat-form-field>
-    <h3 *ngIf="commonIn && editMode">Common in {{ commonIn.length }} Group</h3>
-    <li *ngFor="let group of commonIn">{{ group }}</li>
-    <div style="display: flex;">
-      <span class="spacer"></span>
-      <mat-spinner [diameter]="25" *ngIf="!loading"></mat-spinner>
-      <button
-        mat-raised-button
-        color="primary"
-        type="submit"
-        [disabled]="!form.valid || !loading"
-        (click)="submitForm()"
-      >
-        <mat-icon>{{
-          data.dialogType === "Create" ? "class" : "create"
-        }}</mat-icon>
-        {{ data.dialogType === "Create" ? "Create" : "Edit" }}
-      </button>
-      <button
-        *ngIf="data.dialogType === 'Edit'"
-        mat-raised-button
-        color="warn"
-        type="button"
-        [disabled]="!loading"
-        (click)="onDeleteClick()"
-      >
-        <i class="material-icons">delete</i>
-        Delete
-      </button>
-      <button
-        mat-button
-        color="primary"
-        type="button"
-        [disabled]="!loading"
-        (click)="onCancleClick()"
-      >
-        Close
-      </button>
-    </div>
   </form>
+  <mat-card *ngIf="editMode">
+    <mat-card-subtitle> Common in {{ commonCount() }} Group </mat-card-subtitle>
+    <div class="groups-flow">
+      <mat-card-title *ngFor="let group of commonIn">
+        {{ group }}
+      </mat-card-title>
+    </div>
+  </mat-card>
+  <div mat-dialog-actions>
+    <span class="spacer"></span>
+    <mat-spinner [diameter]="25" *ngIf="!loading"></mat-spinner>
+    <button
+      *ngIf="!editMode"
+      mat-raised-button
+      color="primary"
+      type="submit"
+      [disabled]="!form.valid || !loading"
+      (click)="submitForm()"
+    >
+      <mat-icon>class</mat-icon>
+      {{ data.dialogType === "Create" ? "Create" : "Save" }}
+    </button>
+    <button mat-button *ngIf="editMode" (click)="toggleEditMode()">
+      <mat-icon>edit</mat-icon>
+      Edit
+    </button>
+    <button
+      mat-stroked-button
+      *ngIf="data.dialogType === 'Edit' && !editMode"
+      (click)="toggleEditMode()"
+    >
+      <mat-icon>close</mat-icon>
+      Cancle edit
+    </button>
+    <button
+      *ngIf="data.dialogType === 'Edit' && editMode"
+      mat-stroked-button
+      color="warn"
+      type="button"
+      [disabled]="!loading"
+      (click)="onDeleteClick()"
+    >
+      <mat-icon>delete</mat-icon>
+      Delete
+    </button>
+    <button mat-button color="primary" type="button" (click)="onCancleClick()">
+      Close
+    </button>
+  </div>
 </div>
