@@ -40,13 +40,13 @@ export class GroupComponent implements OnInit {
     this.editMode = !this.editMode;
   }
 
-  filteredContacts() {
-    // array1 = array1.filter(val => !array2.includes(val));
-    let arr = this.contacts.filter(val => !this.group.includes(val));
-    console.log(this.contacts);
-    console.log(this.group);
-    console.log(arr);
-  }
+  // filteredContacts() {
+  //   // array1 = array1.filter(val => !array2.includes(val));
+  //   let arr = this.contacts.filter(val => !this.group.includes(val));
+  //   console.log(this.contacts);
+  //   console.log(this.group);
+  //   console.log(arr);
+  // }
 
   ngOnInit(): void {
     this.loadContacts();
@@ -83,7 +83,7 @@ export class GroupComponent implements OnInit {
     this.loading = false;
     let groupData = { ...this.form.value, contacts: this.group };
     if (this.data.dialogType === "Edit") {
-      this.phonebookService.patchGroup(this.form.value).subscribe(
+      this.phonebookService.patchGroup(groupData).subscribe(
         received => {
           this.onNoClick(received);
         },

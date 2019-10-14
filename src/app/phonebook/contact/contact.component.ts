@@ -12,6 +12,9 @@ import { PhonebookService } from "src/app/phonebook.service";
 export class ContactComponent implements OnInit {
   public form: FormGroup;
   loading: boolean = true;
+  editMode: boolean = false;
+  commonIn: [];
+  error: string;
   constructor(
     public phonebookService: PhonebookService,
     public dialogRef: MatDialogRef<ContactComponent>,
@@ -21,15 +24,22 @@ export class ContactComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.data.contact) {
+      this.phonebookService
+        .getContact(this.data.contact._id)
+        .subscribe(data => {
+          this.commonIn = data.commonIn;
+          this.editMode = true;
+        });
       this.form = new FormGroup({
         _id: new FormControl(this.data.contact._id),
         name: new FormControl(this.data.contact.name, [Validators.required]),
         phone_number: new FormControl(this.data.contact.phone_number, [
           Validators.required,
-          Validators.pattern(/^\d+$/)
+          Validators.pattern(/^[6-9]\d{9}$/)
         ]),
         email_id: new FormControl(this.data.contact.email_id, [
-          Validators.email
+          Validators.email,
+          Validators.pattern(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)
         ]),
         address: new FormControl(this.data.contact.address)
       });
@@ -39,9 +49,12 @@ export class ContactComponent implements OnInit {
         name: new FormControl(null, [Validators.required]),
         phone_number: new FormControl(null, [
           Validators.required,
-          Validators.pattern(/^\d+$/)
+          Validators.pattern(/^[6-9]\d{9}$/)
         ]),
-        email_id: new FormControl(null, [Validators.email]),
+        email_id: new FormControl(null, [
+          Validators.email,
+          Validators.pattern(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)
+        ]),
         address: new FormControl(null)
       });
     }
@@ -72,7 +85,9 @@ export class ContactComponent implements OnInit {
           this.onNoClick(received);
         },
         error => {
-          // this.error = error.error.message.errors.title.message;
+          this.error = error.error.errors.phone_number.message;
+          console.log(error.error.errors.phone_number);
+
           this.loading = true;
         }
       );

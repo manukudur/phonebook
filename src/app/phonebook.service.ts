@@ -18,11 +18,14 @@ export class PhonebookService {
   getContacts(): Observable<[]> {
     return this.http.get<[]>(this.url + "/contacts");
   }
-  getGroup(id): Observable<any> {
-    return this.http.get<any>(this.url + `/group/${id}`);
+  getContact(id): Observable<any> {
+    return this.http.get<any>(this.url + `/contact/${id}`);
   }
   postContact(data): Observable<any> {
     return this.http.post<any>(`${this.url}/create/contact`, data);
+  }
+  getGroup(id): Observable<any> {
+    return this.http.get<any>(this.url + `/group/${id}`);
   }
   postGroup(data): Observable<any> {
     return this.http.post<any>(`${this.url}/create/group`, data);

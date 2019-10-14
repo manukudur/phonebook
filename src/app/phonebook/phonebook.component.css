@@ -19,5 +19,9 @@ span {
 .mat-row:hover {
   background-color: rgba(196, 196, 196, 0.425);
 }
+.container {
+  height: 590px;
+  overflow: auto;
+}
 @media screen and (max-width: 801px) {
 }
