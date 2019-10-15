@@ -97,8 +97,6 @@ THE SOFTWARE.
 
 @angular/material/progress-bar
 
-@angular/material/progress-spinner
-
 @angular/material/snack-bar
 
 @angular/material/table
