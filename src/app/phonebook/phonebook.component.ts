@@ -48,7 +48,7 @@ export class PhonebookComponent implements OnInit {
   selectItem(data) {
     if (data.type === "contact") {
       const dialogRef = this.dialog.open(ContactComponent, {
-        width: "500px",
+        panelClass: "app-full-bleed-dialog",
         data: { dialogType: "Edit", contact: data }
       });
 
@@ -62,7 +62,7 @@ export class PhonebookComponent implements OnInit {
       });
     } else {
       const dialogRef = this.dialog.open(GroupComponent, {
-        width: "auto",
+        panelClass: "app-full-bleed-dialog",
         data: { dialogType: "Edit", group: data }
       });
 

@@ -11,27 +11,50 @@ import { PhonebookService } from "src/app/phonebook.service";
 })
 export class ContactComponent implements OnInit {
   public form: FormGroup;
-  loading: boolean = true;
+  loading: boolean = false;
   editMode: boolean = false;
   commonIn: string[] = [];
   error: string;
-  loadedData;
 
   constructor(
     public phonebookService: PhonebookService,
     public dialogRef: MatDialogRef<ContactComponent>,
     @Inject(MAT_DIALOG_DATA)
     public data: { dialogType: string; contact?: Contact }
-  ) {}
+  ) {
+    this.loading = true;
+  }
+
+  loadDetails() {
+    this.loading = true;
+    this.phonebookService.getContact(this.data.contact._id).subscribe(data => {
+      this.commonIn = data.commonIn;
+      this.data.contact = data.contact;
+      this.initilizeForm();
+      this.loading = false;
+    });
+  }
+
+  initilizeForm() {
+    this.form = new FormGroup({
+      _id: new FormControl(this.data.contact._id),
+      name: new FormControl(this.data.contact.name, [Validators.required]),
+      phone_number: new FormControl(this.data.contact.phone_number, [
+        Validators.required,
+        Validators.pattern(/^[6-9]\d{9}$/)
+      ]),
+      email_id: new FormControl(this.data.contact.email_id, [
+        Validators.email,
+        Validators.pattern(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)
+      ]),
+      address: new FormControl(this.data.contact.address)
+    });
+  }
 
   ngOnInit(): void {
     if (this.data.contact) {
       this.editMode = true;
-      this.phonebookService
-        .getContact(this.data.contact._id)
-        .subscribe(data => {
-          this.commonIn = data.commonIn;
-        });
+      this.loadDetails();
       this.form = new FormGroup({
         _id: new FormControl(this.data.contact._id),
         name: new FormControl(this.data.contact.name, [Validators.required]),
@@ -46,6 +69,7 @@ export class ContactComponent implements OnInit {
         address: new FormControl(this.data.contact.address)
       });
     } else {
+      this.loading = false;
       this.form = new FormGroup({
         _id: new FormControl(null),
         name: new FormControl(null, [Validators.required]),
@@ -70,15 +94,15 @@ export class ContactComponent implements OnInit {
     }
   }
   submitForm() {
-    this.loading = false;
+    this.loading = true;
     if (this.data.dialogType === "Edit") {
       this.phonebookService.patchContact(this.form.value).subscribe(
         received => {
           this.onNoClick(received);
         },
         error => {
-          this.error = "something went wrong";
-          this.loading = true;
+          this.error = "Phone number or Email Id already exists";
+          this.loading = false;
         }
       );
     } else {
@@ -87,8 +111,8 @@ export class ContactComponent implements OnInit {
           this.onNoClick(received);
         },
         error => {
-          this.error = "something went wrong";
-          this.loading = true;
+          this.error = "Phone number or Email Id already exists";
+          this.loading = false;
         }
       );
     }
@@ -100,6 +124,7 @@ export class ContactComponent implements OnInit {
     this.dialogRef.close();
   }
   toggleEditMode() {
+    this.initilizeForm();
     this.editMode = !this.editMode;
   }
   commonCount() {

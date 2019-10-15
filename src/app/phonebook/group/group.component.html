@@ -1,108 +1,110 @@
-<h1 *ngIf="editMode" class="mat-display-1">
-  <mat-icon>group</mat-icon>
-  {{ data.group.name }}
-</h1>
-<h1 *ngIf="!editMode" class="mat-display-1">
-  {{ data.dialogType }} your Group
-</h1>
-<p class="error">{{ error }}</p>
-<form [formGroup]="form" autocomplete="off">
-  <mat-form-field class="container" *ngIf="!editMode">
-    <mat-label>Group Name</mat-label>
-    <input matInput formControlName="name" />
-  </mat-form-field>
-</form>
-<div>
-  <div class="container" [ngClass]="{ 'edit-mode': editMode === true }">
-    <div
-      cdkDropList
-      #contactsList="cdkDropList"
-      [cdkDropListData]="contacts"
-      [cdkDropListConnectedTo]="groupList"
-      class="list"
-      (cdkDropListDropped)="drop($event)"
-    >
-      <div class="list-item" *ngFor="let item of contacts" cdkDrag>
-        {{ item.name }}
-        <mat-card *cdkDragPreview>
-          <mat-card-header>
-            <mat-card-title>{{ item.name }}</mat-card-title>
-            <mat-card-subtitle>{{ item.phone_number }}</mat-card-subtitle>
-            <mat-card-subtitle>{{ item.email_id }}</mat-card-subtitle>
-            <mat-card-subtitle>{{ item.address }}</mat-card-subtitle>
-          </mat-card-header>
-        </mat-card>
+<mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
+<div style="width: auto; padding: 24px;">
+  <h1 *ngIf="editMode" class="mat-display-1">
+    <mat-icon>group</mat-icon>
+    {{ data.group.name }}
+  </h1>
+  <h1 *ngIf="!editMode" class="mat-display-1">
+    {{ data.dialogType }} your Group
+  </h1>
+  <p class="error">{{ error }}</p>
+  <form [formGroup]="form" autocomplete="off">
+    <mat-form-field class="container" *ngIf="!editMode">
+      <mat-label>Group Name</mat-label>
+      <input matInput formControlName="name" />
+    </mat-form-field>
+  </form>
+  <div>
+    <div class="container" [ngClass]="{ 'edit-mode': editMode === true }">
+      <div
+        cdkDropList
+        #contactsList="cdkDropList"
+        [cdkDropListData]="contacts"
+        [cdkDropListConnectedTo]="groupList"
+        class="list"
+        (cdkDropListDropped)="drop($event)"
+      >
+        <div class="list-item" *ngFor="let item of contacts" cdkDrag>
+          {{ item.name }}
+          <mat-card *cdkDragPreview>
+            <mat-card-header>
+              <mat-card-title>{{ item.name }}</mat-card-title>
+              <mat-card-subtitle>{{ item.phone_number }}</mat-card-subtitle>
+              <mat-card-subtitle>{{ item.email_id }}</mat-card-subtitle>
+              <mat-card-subtitle>{{ item.address }}</mat-card-subtitle>
+            </mat-card-header>
+          </mat-card>
+        </div>
       </div>
+      <p>Drang and drop the contacts</p>
     </div>
-    <p>Drang and drop the contacts</p>
-  </div>
 
-  <div class="container">
-    <div
-      cdkDropList
-      #groupList="cdkDropList"
-      [cdkDropListData]="group"
-      [cdkDropListConnectedTo]="contactsList"
-      class="list"
-      (cdkDropListDropped)="drop($event)"
-    >
-      <div class="list-item" *ngFor="let item of group" cdkDrag>
-        {{ item.name }}
-        <mat-card *cdkDragPreview>
-          <mat-card-header>
-            <mat-card-title>{{ item.name }}</mat-card-title>
-            <mat-card-subtitle>{{ item.phone_number }}</mat-card-subtitle>
-            <mat-card-subtitle>{{ item.email_id }}</mat-card-subtitle>
-            <mat-card-subtitle>{{ item.address }}</mat-card-subtitle>
-          </mat-card-header>
-        </mat-card>
+    <div class="container">
+      <div
+        cdkDropList
+        #groupList="cdkDropList"
+        [cdkDropListData]="group"
+        [cdkDropListConnectedTo]="contactsList"
+        class="list"
+        (cdkDropListDropped)="drop($event)"
+      >
+        <div class="list-item" *ngFor="let item of group" cdkDrag>
+          {{ item.name }}
+          <mat-card *cdkDragPreview>
+            <mat-card-header>
+              <mat-card-title>{{ item.name }}</mat-card-title>
+              <mat-card-subtitle>{{ item.phone_number }}</mat-card-subtitle>
+              <mat-card-subtitle>{{ item.email_id }}</mat-card-subtitle>
+              <mat-card-subtitle>{{ item.address }}</mat-card-subtitle>
+            </mat-card-header>
+          </mat-card>
+        </div>
       </div>
-    </div>
-    <div mat-dialog-actions>
-      <span class="spacer"></span>
-      <mat-spinner [diameter]="25" *ngIf="!loading"></mat-spinner>
-      <button
-        *ngIf="!editMode"
-        mat-raised-button
-        color="primary"
-        type="submit"
-        [disabled]="!form.valid || !loading"
-        (click)="submitGroup()"
-      >
-        <mat-icon>class</mat-icon>
-        {{ data.dialogType === "Create" ? "Create" : "Save" }}
-      </button>
-      <button mat-button *ngIf="editMode" (click)="toggleEditMode()">
-        <mat-icon>edit</mat-icon>
-        Edit
-      </button>
-      <button
-        mat-stroked-button
-        *ngIf="data.dialogType === 'Edit' && !editMode"
-        (click)="toggleEditMode()"
-      >
-        <mat-icon>close</mat-icon>
-        Cancle edit
-      </button>
-      <button
-        *ngIf="data.dialogType === 'Edit' && editMode"
-        mat-stroked-button
-        color="warn"
-        type="button"
-        [disabled]="!loading"
-        (click)="deleteGroup()"
-      >
-        <mat-icon>delete</mat-icon>
-        Delete
-      </button>
-      <button
-        mat-button
-        color="primary"
-        type="button"
-        (click)="onCancleClick()"
-      >
-        Close
-      </button>
+      <div mat-dialog-actions>
+        <span class="spacer"></span>
+        <button
+          *ngIf="!editMode"
+          mat-raised-button
+          color="primary"
+          type="submit"
+          [disabled]="!form.valid || loading"
+          (click)="submitGroup()"
+        >
+          <mat-icon>class</mat-icon>
+          {{ data.dialogType === "Create" ? "Create" : "Save" }}
+        </button>
+        <button mat-button *ngIf="editMode" (click)="onEditClidk()">
+          <mat-icon>edit</mat-icon>
+          Edit
+        </button>
+        <button
+          mat-stroked-button
+          *ngIf="data.dialogType === 'Edit' && !editMode"
+          (click)="onCancleEditMode()"
+        >
+          <mat-icon>close</mat-icon>
+          Cancle edit
+        </button>
+        <button
+          *ngIf="data.dialogType === 'Edit' && editMode"
+          mat-stroked-button
+          color="warn"
+          type="button"
+          [disabled]="loading"
+          (click)="deleteGroup()"
+        >
+          <mat-icon>delete</mat-icon>
+          Delete
+        </button>
+        <button
+          mat-button
+          color="primary"
+          type="button"
+          (click)="onCancleClick()"
+        >
+          Close
+        </button>
+      </div>
     </div>
   </div>
 </div>

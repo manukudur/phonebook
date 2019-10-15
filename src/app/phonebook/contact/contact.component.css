@@ -19,7 +19,14 @@ button {
 h3 {
   margin: 0%;
 }
+mat-card {
+  padding: 0%;
+}
+mat-card-subtitle {
+  padding: 4px;
+}
 .groups-flow {
-  height: 70px;
-  overflow: auto;
+  margin: 0%;
+  width: 200px;
+  pointer-events: none;
 }

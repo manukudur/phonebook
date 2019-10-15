@@ -19,7 +19,7 @@ export class AppComponent {
   ) {}
   createContactDialog() {
     const dialogRef = this.dialog.open(ContactComponent, {
-      width: "500px",
+      panelClass: "app-full-bleed-dialog",
       data: { dialogType: "Create" }
     });
 
@@ -34,7 +34,7 @@ export class AppComponent {
   }
   createGroupDialog() {
     const dialogRef = this.dialog.open(GroupComponent, {
-      width: "auto",
+      panelClass: "app-full-bleed-dialog",
       data: { dialogType: "Create" }
     });
 

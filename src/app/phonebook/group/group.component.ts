@@ -20,7 +20,7 @@ export class GroupComponent implements OnInit {
   contacts: Contact[] = [];
   group: Contact[] = [];
   error: string;
-  loading: boolean = true;
+  loading: boolean = false;
   editMode: boolean = false;
 
   constructor(
@@ -28,41 +28,56 @@ export class GroupComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA)
     public data: { dialogType: string; group?: Group },
     private phonebookService: PhonebookService
-  ) {}
+  ) {
+    this.loading = true;
+  }
 
   loadContacts() {
+    this.loading = true;
     this.phonebookService.getContacts().subscribe(contacts => {
       this.contacts = contacts;
+      this.loading = false;
     });
   }
 
-  toggleEditMode() {
-    this.editMode = !this.editMode;
+  loadInvertContacts(id) {
+    this.loading = true;
+    this.phonebookService.getInvertContacts(id).subscribe(contacts => {
+      this.contacts = contacts;
+      this.loading = false;
+    });
   }
 
-  // filteredContacts() {
-  //   // array1 = array1.filter(val => !array2.includes(val));
-  //   let arr = this.contacts.filter(val => !this.group.includes(val));
-  //   console.log(this.contacts);
-  //   console.log(this.group);
-  //   console.log(arr);
-  // }
+  loadGroups() {
+    this.loading = true;
+    let id = this.data.group._id;
+    this.phonebookService.getGroup(id).subscribe(data => {
+      this.group = data.contacts;
+      this.loading = false;
+    });
+  }
+
+  onCancleEditMode() {
+    this.contacts = [];
+    this.editMode = !this.editMode;
+    this.loadGroups();
+  }
+
+  onEditClidk() {
+    this.editMode = !this.editMode;
+    this.loadInvertContacts(this.data.group._id);
+  }
 
   ngOnInit(): void {
-    this.loadContacts();
     if (this.data.group) {
       this.editMode = true;
-      let id = this.data.group._id;
-      this.phonebookService.getGroup(id).subscribe(data => {
-        this.group = data.contacts;
-        // this.filteredContacts();
-        // bug bug bug ..................!
-      });
+      this.loadGroups();
       this.form = new FormGroup({
         _id: new FormControl(this.data.group._id),
         name: new FormControl(this.data.group.name, [Validators.required])
       });
     } else {
+      this.loadContacts();
       this.editMode = false;
       this.form = new FormGroup({
         _id: new FormControl(null),
@@ -80,7 +95,7 @@ export class GroupComponent implements OnInit {
     }
   }
   submitGroup() {
-    this.loading = false;
+    this.loading = true;
     let groupData = { ...this.form.value, contacts: this.group };
     if (this.data.dialogType === "Edit") {
       this.phonebookService.patchGroup(groupData).subscribe(
@@ -88,8 +103,8 @@ export class GroupComponent implements OnInit {
           this.onNoClick(received);
         },
         error => {
-          // this.error = error.error.message.errors.title.message;
-          this.loading = true;
+          this.error = "Group name already exists";
+          this.loading = false;
         }
       );
     } else {
@@ -99,7 +114,7 @@ export class GroupComponent implements OnInit {
         },
         error => {
           this.error = error.error.errors.name.message;
-          this.loading = true;
+          this.loading = false;
         }
       );
     }

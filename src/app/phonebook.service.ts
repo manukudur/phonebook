@@ -27,6 +27,9 @@ export class PhonebookService {
   getGroup(id): Observable<any> {
     return this.http.get<any>(this.url + `/group/${id}`);
   }
+  getInvertContacts(id): Observable<any> {
+    return this.http.get<any>(this.url + `/notin/${id}`);
+  }
   postGroup(data): Observable<any> {
     return this.http.post<any>(`${this.url}/create/group`, data);
   }
